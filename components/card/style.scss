@@ -1,0 +1,72 @@
+.deck{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card{
+    margin: 10px;
+   user-select:none;
+    .container{
+        padding: 5px;
+        border: 1px solid black;
+        border-radius: 9px;
+        width: 250px;
+        height: 320px;
+        display: flex;
+        justify-content: space-around;
+        .col1,.col2,.col3,.col4,.col5{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            img{
+                padding: 5px 0px !important;
+            }
+        }
+        .col1{
+            justify-content: flex-start;
+        }
+        .col5{
+            justify-content: flex-start;
+        }
+        .col1,.col5{
+            height: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            img{
+              height: 32px !important;  
+            }
+        }
+        .col5{
+            transform: rotate(180deg);
+        }
+        .rank{
+            font-size:50px;
+            line-height: .8;
+        }
+    }
+
+}
+
+ .A,.K,.Q,.J{
+        .col3{
+            img{
+                height: 130px  !important;
+            }
+        }
+    }
+    .K{
+        background-image:linear-gradient(rgba(160, 158, 158, 0.448),
+              rgba(68, 67, 67, 0.448)) ,url('/king.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+.diamond,.heart{
+    color:#D40100;
+}
+
+.rotate{
+    transform: rotate(180deg);
+}
