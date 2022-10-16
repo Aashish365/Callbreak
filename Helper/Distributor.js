@@ -1,5 +1,5 @@
 export default function Distributor(players, deck) {
-	for (let i = 0; i < deck.length; i++) {
+	for (let i = 0; i < deck.length; i += 4) {
 		players[0].cards.push(deck[i]);
 		players[1].cards.push(deck[i + 1]);
 		players[2].cards.push(deck[i + 2]);

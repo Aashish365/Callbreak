@@ -1,7 +1,10 @@
 import Image from "next/image";
+import Distributor from "../../Helper/Distributor";
 import Shuffle from "../../Helper/Shuffle";
 import { useEffect, useState } from "react";
-export default function Card() {
+import { h1 } from "fontawesome";
+
+export default function Card(players) {
 	const cards = [
 		{
 			name: "Ace",
@@ -104,12 +107,12 @@ export default function Card() {
 			},
 		},
 		{
-			name: "Joker",
+			name: "Jack",
 			number: 11,
 			rank: "J",
 			Symbol_position: {
 				first_col: 0,
-				mid_col: 1,
+				mid_col: 2,
 				last_col: 0,
 			},
 		},
@@ -119,7 +122,7 @@ export default function Card() {
 			rank: "Q",
 			Symbol_position: {
 				first_col: 0,
-				mid_col: 1,
+				mid_col: 2,
 				last_col: 0,
 			},
 		},
@@ -129,7 +132,7 @@ export default function Card() {
 			rank: "K",
 			Symbol_position: {
 				first_col: 0,
-				mid_col: 1,
+				mid_col: 2,
 				last_col: 0,
 			},
 		},
@@ -137,10 +140,14 @@ export default function Card() {
 
 	const club = <Image src="/club.svg" height={50} width={50} alt="club" />;
 	const diamond = (
-		<Image src="/diamond.svg" height={50} width={50} alt="club" />
+		<Image src="/diamond.svg" height={50} width={50} alt="diamond" />
 	);
-	const heart = <Image src="/heart.svg" height={50} width={50} alt="club" />;
-	const spade = <Image src="/spade.svg" height={50} width={50} alt="club" />;
+	const heart = <Image src="/heart.svg" height={50} width={50} alt="heart" />;
+	const spade = <Image src="/spade.svg" height={50} width={50} alt="spade" />;
+
+	const king = <Image src="/king.png" height={120} width={120} alt="king" />;
+	const queen = <Image src="/queen.png" height={120} width={120} alt="queen" />;
+	const jack = <Image src="/jack.png" height={120} width={120} alt="jack" />;
 
 	function displayImage(type) {
 		if (type === "club") {
@@ -173,6 +180,19 @@ export default function Card() {
 
 		return data;
 	}
+
+	let checkFaceCard = (card, type) => {
+		if (card.name === "Jack") {
+			return jack;
+		} else if (card.name == "Queen") {
+			return queen;
+		} else if (card.name == "King") {
+			return king;
+		} else {
+			return type;
+		}
+	};
+
 	const cardLayout = (card, type) => (
 		<div
 			key={card.rank + card.type}
@@ -186,11 +206,12 @@ export default function Card() {
 					{generateCol(card.Symbol_position.first_col, type)}
 				</div>
 				<div className="col3">
-					{generateCol(card.Symbol_position.mid_col, type)}
+					{generateCol(card.Symbol_position.mid_col, checkFaceCard(card, type))}
 				</div>
 				<div className="col4">
 					{generateCol(card.Symbol_position.last_col, type)}
 				</div>
+
 				<div className="col5">
 					<span className="rank">{card.rank}</span>
 					<div>{type}</div>
@@ -229,7 +250,8 @@ export default function Card() {
 
 	let mycards = (cards) => (
 		<div className="deck">
-			{cards.map((card) => {
+			{cards.map((card, key) => {
+				key = key;
 				return cardLayout(card, displayImage(card.type));
 			})}
 		</div>
@@ -238,5 +260,31 @@ export default function Card() {
 	useEffect(() => {
 		setsuffledcards(Shuffle(deckBuilder(cards)));
 	}, []);
-	return <div>{mycards(shuffledCards)}</div>;
+	Distributor(players, shuffledCards);
+
+	function showcards() {
+		let allPlayers = [];
+		for (let i = 0; i < players.length; i++) {
+			allPlayers.push(mycards(players[i].cards));
+		}
+		return allPlayers;
+	}
+
+	return (
+		<div>
+			{/* <h1>Player 1</h1>
+			{mycards(players[0].cards)}
+
+			<h1>Player 2</h1>
+			{mycards(players[1].cards)}
+
+			<h1>Player 3</h1>
+			{mycards(players[2].cards)}
+
+			<h1>Player 4</h1>
+			{mycards(players[3].cards)} */}
+
+			{showcards()}
+		</div>
+	);
 }

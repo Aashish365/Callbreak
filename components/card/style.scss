@@ -48,21 +48,39 @@
 
 }
 
- .A,.K,.Q,.J{
+ .A{
+    .container{
         .col3{
             img{
                 height: 130px  !important;
             }
         }
-    }
-    .K{
-        background-image:linear-gradient(rgba(160, 158, 158, 0.448),
-              rgba(68, 67, 67, 0.448)) ,url('/king.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
+        .col2,.col4{
+            width: 0px;
+            display: none;
+        }
+
+    }    
     }
 
+
+.K,.Q,.J{
+    .container{
+        .col3{
+            img{
+                padding: none !important;
+                height: 150px  !important;
+                width: 160px !important;
+                
+            }
+        }
+        .col2,.col4{
+            width: 0px;
+            display: none;
+        }
+
+    }
+}
 .diamond,.heart{
     color:#D40100;
 }
