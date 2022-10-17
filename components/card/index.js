@@ -2,13 +2,13 @@ import Image from "next/image";
 import Distributor from "../../Helper/Distributor";
 import Shuffle from "../../Helper/Shuffle";
 import { useEffect, useState } from "react";
-import { h1 } from "fontawesome";
+import CardSorting from "../../Helper/CardSorting";
 
 export default function Card(players) {
 	const cards = [
 		{
 			name: "Ace",
-			number: 1,
+			number: 14,
 			rank: "A",
 			Symbol_position: {
 				first_col: 0,
@@ -262,29 +262,27 @@ export default function Card(players) {
 	}, []);
 	Distributor(players, shuffledCards);
 
-	function showcards() {
-		let allPlayers = [];
-		for (let i = 0; i < players.length; i++) {
-			allPlayers.push(mycards(players[i].cards));
-		}
-		return allPlayers;
-	}
+	// function showcards() {
+	// 	let allPlayers = [];
+	// 	for (let i = 0; i < players.length; i++) {
+	// 		allPlayers.push(mycards(players[i].cards));
+	// 	}
+	// 	return allPlayers;
+	// }
 
 	return (
 		<div>
-			{/* <h1>Player 1</h1>
-			{mycards(players[0].cards)}
+			<h1>Player 1</h1>
+			{mycards(CardSorting(players[0].cards))}
 
 			<h1>Player 2</h1>
-			{mycards(players[1].cards)}
+			{mycards(CardSorting(players[1].cards))}
 
 			<h1>Player 3</h1>
-			{mycards(players[2].cards)}
+			{mycards(CardSorting(players[2].cards))}
 
 			<h1>Player 4</h1>
-			{mycards(players[3].cards)} */}
-
-			{showcards()}
+			{mycards(CardSorting(players[3].cards))}
 		</div>
 	);
 }
