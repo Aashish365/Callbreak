@@ -57,7 +57,7 @@ function getInitiatorIndex(cards) {
 export default function PointsCollector() {
 	const thrownCards = [
 		{
-			card: "ACE of Spade",
+			card: { type: "Heart", number: 10 },
 			player: {
 				score: 0,
 				PlayerName: "pl1",
@@ -65,23 +65,23 @@ export default function PointsCollector() {
 			},
 		},
 		{
-			card: "ACE of Heart",
+			card: { type: "Club", number: 13 },
 			player: {
 				score: 0,
 				PlayerName: "pl2",
-				initiator: false,
-			},
-		},
-		{
-			card: "ACE of Club",
-			player: {
-				score: 0,
-				PlayerName: "pl3",
 				initiator: true,
 			},
 		},
 		{
-			card: "ACE of Diamond",
+			card: { type: "Heart", number: 9 },
+			player: {
+				score: 0,
+				PlayerName: "pl3",
+				initiator: false,
+			},
+		},
+		{
+			card: { type: "Heart", number: 14 },
 			player: {
 				score: 0,
 				PlayerName: "pl4",
@@ -94,7 +94,7 @@ export default function PointsCollector() {
 		const biggerCardIndex = biggerCard(thrownCards);
 		thrownCards[biggerCardIndex].player.score += 1;
 	} else {
-		if (countSpades(thrownCards).length == 1) {
+		if (countSpades(thrownCards).length === 1) {
 			let spadeCardIndexes = countSpades(thrownCards);
 			thrownCards[spadeCardIndexes[0]].player.score += 1;
 		} else if (countSpades(thrownCards).length >= 2) {
@@ -104,7 +104,7 @@ export default function PointsCollector() {
 			let biggerSpadeCardIndex = 0;
 			for (let i = 0; i < spadeCardIndexes.length; i++) {
 				if (thrownCards[spadeCardIndexes[i]].card.number > biggerSpadeCard) {
-					biggerCard = thrownCards[spadeCardIndexes[i]].card.number;
+					biggerSpadeCard = thrownCards[spadeCardIndexes[i]].card.number;
 					biggerSpadeCardIndex = i;
 				}
 			}
