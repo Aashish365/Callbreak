@@ -135,6 +135,8 @@ function CardOnOff(props) {
 				// No card matches
 				if (initiatorCardType !== "Spade") {
 					// thrown card is not spade
+
+					let spadesIndexes = sameCards(players[i], "Spade");
 					let num = noOfSpades(players[i].cards);
 					if (num == 0) {
 						// when player donot have spade
@@ -143,22 +145,18 @@ function CardOnOff(props) {
 						// having onlyOne spade with player
 						let spadeNum = noOfSpades(thrownCards);
 						if (spadeNum === 0) {
-							activateSelectedCard(
-								sameCards(players[i].cards, "Spade"),
-								players[i].cards
-							);
+							activateSelectedCard(spadesIndexes, players[i].cards);
 						} else {
 							// when one or more spade is already thrown by other player
-							let spadeOfPlayer = sameCards(players[i].cards, "Spade");
 
 							let activatedSpades = 0;
 							// when spade of player is greater than the other spades
-							for (let k = 0; k < spadeOfPlayer.length; k++) {
+							for (let k = 0; k < spadesIndexes.length; k++) {
 								if (
-									players[i].cards[spadeOfPlayer[k]].number >
-									findGreaterSpade(thrownCards).number
+									players[i].cards[spadesIndexes[k]].number >
+									greatest(thrownCards, "Spade").number
 								) {
-									players[i].cards[spadeOfPlayer[k]].active = true;
+									players[i].cards[spadesIndexes[k]].active = true;
 									activatedSpades++;
 								}
 							}
@@ -173,19 +171,16 @@ function CardOnOff(props) {
 						let noOfThrownSpades = sameCards(thrownCards, "Spade").length;
 						if (noOfThrownSpades === 0) {
 							// when noone has thrown spade
-							activateSelectedCard(
-								sameCards(player[i].cards, "Spades"),
-								player[i].cards
-							);
+							activateSelectedCard(spadesIndexes, player[i].cards);
 						} else {
 							// when one or more spades is thrown
-							let spadesOfPlayer = sameCards(players[i].cards, "Spade");
-							for (let l = 0; l < spadesOfPlayer.length; l++) {
+
+							for (let l = 0; l < spadesIndexes.length; l++) {
 								if (
-									players[i].cards[spadesOfPlayer[l]].number >
+									players[i].cards[spadesIndexes[l]].number >
 									findGreaterSpade(thrownCards).number
 								) {
-									players[i].cards[spadesOfPlayer[l]].active = true;
+									players[i].cards[spadesIndexes[l]].active = true;
 								}
 							}
 						}
@@ -197,7 +192,7 @@ function CardOnOff(props) {
 			} else {
 				// when player has one or more cards of same type as cardInitiator
 
-				let greatestThrownCard = greatest(thrownCards, thrownCards[i].type);
+				let greatestThrownCard = greatest(thrownCards, initiatorCardType);
 
 				// this gives an array of indexes of cards greater than the greater card of same type
 				let biggercardsindexes = greatestIndexes(
