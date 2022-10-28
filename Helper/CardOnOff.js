@@ -8,72 +8,6 @@ function findCardsNumber(player, cardType) {
 	return indexes;
 }
 
-/*
-  initiate thrownCards array;   
-  push the card of player1_thrownCard in thrownCards array;
-
-  check the type of thrownCards[0] with the cards present in all players. ( this will return the array of indexes of matched card types of all players)
-
-  forEveryPlayer:
-    if(indexes.length ===0) // cards is not present
-    {
-        if(throwncards[0].type!=="Spade") // if the thrown card is not spade
-        {
-            num= get the number of spade cards in player;
-            if(num==0) // having no spades with player
-            {
-                activate all Cards of player;
-            }else if(num==1) // having one spade with player
-            {   
-                spadeNumber= find the number of spades from the thrownCards array.
-                if(spadeNumber===0){
-                    activate the spade card of player;
-                }else if(spadeNumber ===1){
-                    if(spade of player > spade card thrown){  
-                        activate the spade of player.
-                    }else{
-                        activate all cards of player.
-                    }
-
-                }else{
-                    bigSpade= find the big spade from the thrown cards;
-                    if(spade of player > bigSpade){
-                        activate the spade of player;
-                    }else{
-                        activate all the cards of the player.
-                    }
-                }
-                
-            }else{
-                thrownSpade= number of spades in throwCards array.
-
-                if(thrownSpade===0){
-                        activate all spades of player;
-                }else if(thrownSpade >==1){
-                        bigSpade= find the big spade card in thrown cards array;
-                        activate those spades of players greater than bigSpade;
-                }else{do nothing}
-            }
-
-
-        }else { // // if the thrown card is spade and spade is not present in player Card
-            activate all cards of player.
-        }
-    
-    } else if( indexes.length ===1){
-        activateTheCard;
-    }else if(indexes.length >==2){
-        bigCardOfSameType= find the big card from the thrownCards array.
-        biggerCardsInPlayer= find the number of cards bigger than bigcardOfsameType.
-        if(biggercardsInPlayer==0){
-            activate all cards of type thrownCards[0].type in player cards.
-        }else if(biggerCardsIn Player>=1){
-            activate the cards of type thrownCards[0].type which is/are bigger than bigCardOfSameType.
-        }
-    }
-
-*/
-
 // this will give the indexes of the card with for matching type
 function sameCards(cards, type) {
 	let indexes = [];
@@ -113,6 +47,39 @@ function findGreaterSpade(cards) {
 	return greatest;
 }
 
+function greatest(array, type) {
+	let greatest;
+
+	if (array.length === 0) {
+		greatest = array[0];
+	} else {
+		// finding the first card of same type
+		for (let i = 0; i < array.length; i++) {
+			if (array[i].type === type) {
+				greatest = array[i];
+			}
+		}
+		/// finding the greatest from all cards
+		for (let o = 0; o < array.length; o++) {
+			if (array[i].type === type) {
+				if (array[i].number > greatest.number) {
+					greatest = array[i];
+				}
+			}
+		}
+	}
+}
+
+function greatestIndexes(array, card) {
+	let indexes = [];
+	for (let i = 0; i < array.length; i++) {
+		if (array[i].type === card.type && array[i].number > card.number) {
+			index.push(i);
+		}
+	}
+	return indexes;
+}
+
 function activateAllCards(array) {
 	for (let i = 0; i < array.length; i++) {
 		array[i].active = true;
@@ -123,6 +90,16 @@ function activateSelectedCard(indexes, array) {
 	for (let i = 0; i < indexes.length; i++) {
 		array[indexes[i]].active = true;
 	}
+}
+
+function biggerCards(array, card) {
+	let indexes = [];
+	for (let i = 0; i < array.length; i++) {
+		if (array[i].type === card.type && array[i].number > card.number) {
+			indexes.push(i);
+		}
+	}
+	return indexes;
 }
 
 function CardOnOff(props) {
@@ -155,7 +132,7 @@ function CardOnOff(props) {
 		for (let i = 1; i < 4; i++) {
 			let indexes = sameCards(players[i], initiatorCardType);
 			if (indexes.length === 0) {
-				// no card matches
+				// No card matches
 				if (initiatorCardType !== "Spade") {
 					// thrown card is not spade
 					let num = noOfSpades(players[i].cards);
@@ -214,7 +191,27 @@ function CardOnOff(props) {
 						}
 					}
 				} else {
+					// when player donot have any spade with him/her
 					activateAllCards(players[i].cards);
+				}
+			} else {
+				// when player has one or more cards of same type as cardInitiator
+
+				let greatestThrownCard = greatest(thrownCards, thrownCards[i].type);
+
+				// this gives an array of indexes of cards greater than the greater card of same type
+				let biggercardsindexes = greatestIndexes(
+					player[i].cards,
+					greatestThrownCard
+				);
+
+				if (biggercardsindexes.length === 0) {
+					// when player donot have no greater card of same type of initiator
+					activateSelectedCard(indexes, players[i].cards);
+				}
+				// when player has greater cards of same type of initiator
+				else {
+					activateSelectedCard(biggercardsindexes, player[i].cards);
 				}
 			}
 		}
